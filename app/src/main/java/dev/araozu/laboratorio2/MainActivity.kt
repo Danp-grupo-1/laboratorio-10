@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -19,6 +20,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
+import dev.araozu.laboratorio2.viewmodel.CandidatoViewModel
+import dev.araozu.laboratorio2.viewmodel.DistritoViewModel
+import dev.araozu.laboratorio2.viewmodel.PartidoViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +58,7 @@ fun NavigationHost() {
             composable(
                 route = Destinations.DistritosScreen.route
             ) {
-                ListDistritos(navController)
+                ListDistritos(navController, viewModel= DistritoViewModel())
             }
             composable(
                 route = Destinations.CandidatosDistritoScreen.route,
@@ -62,12 +66,12 @@ fun NavigationHost() {
             ) {
                 val distrito = it.arguments?.getString("distrito")
                 requireNotNull(distrito)
-                ListCandidatosDistrito(distrito, navController)
+                ListCandidatosDistrito(distrito,viewModel = CandidatoViewModel(), navController)
             }
             composable(
                 route = Destinations.PartidosScreen.route
             ) {
-                ListPartidos(navController)
+                ListPartidos(navController,viewModel = PartidoViewModel())
             }
             //
             composable(
@@ -78,7 +82,7 @@ fun NavigationHost() {
             ) {
                 val partido = it.arguments?.getString("partido")
                 requireNotNull(partido)
-                ListCandidatosPartido(partido, navController)
+                ListCandidatosPartido(partido,viewModel = CandidatoViewModel(), navController)
             }
         }
     }

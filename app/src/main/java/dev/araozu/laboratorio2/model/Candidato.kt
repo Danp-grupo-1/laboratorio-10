@@ -1,18 +1,78 @@
 package dev.araozu.laboratorio2.model
+
+import androidx.room.*
+
 const val loremIpsum =
     "\"Mas informacion:  ipsum, dolor sit amet consectetur adipisicing elit. Cum nam ab quae impedit repudiandae, sunt pariatur facere amet \" +\n" +
-            "\"obcaecati iusto repellat, officiis incidunt rerum nesciunt necessitatibus? Culpa voluptas autem excepturi!\","
+    "\"obcaecati iusto repellat, officiis incidunt rerum nesciunt necessitatibus? Culpa voluptas autem excepturi!\","
 
+
+
+@Dao
+interface CandidatoDao {
+    @Query("SELECT * FROM candidatos ORDER BY nombre ASC")
+    suspend fun getAll(): List<Candidato>
+
+    @Query("SELECT * FROM candidatos WHERE nombre = :nombre")
+    suspend fun getByNombre(nombre: String): Candidato
+
+    @Query("SELECT * FROM candidatos WHERE partido = :partido")
+    suspend fun getByPartido(partido: String): List<Candidato>
+
+    @Query("SELECT * FROM candidatos WHERE distrito = :distrito")
+    suspend fun getByDistrito(distrito: Distrito): List<Candidato>
+
+    @Insert
+    suspend fun insertAll(vararg candidato: Candidato)
+
+    @Update
+    suspend fun update(candidato: Candidato)
+
+    @Delete
+    suspend fun delete(candidato: Candidato)
+
+    @Query("DELETE FROM candidatos")
+    suspend fun deleteAll()
+}
+
+@Entity(
+    tableName = "candidatos",
+)
 data class Candidato(
-    var nombre: String,
-    var partido: Partido,
+    @ColumnInfo(name = "nombre") var nombre: String,
+    // Id del partido en Room
+    @ColumnInfo(name = "partido") var partido: String,
     /**
      * Una url a una foto
      */
-    var foto: String,
-    var biografia: String,
-    var distrito: Distrito,
+    @ColumnInfo(name = "foto") var foto: String,
+    @ColumnInfo(name = "biografia") var biografia: String,
+    @ColumnInfo(name = "distrito") var distrito: Distrito,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
 ) {
+    // Constructor secundario para compatibilidad
+    constructor(
+        nombre: String,
+        partido: Partido,
+        foto: String,
+        biografia: String,
+        distrito: Distrito
+    ) : this(nombre, partido.nombre, foto, biografia, distrito)
+
+
+    class Converter {
+        @TypeConverter
+        fun fromDistrito(d: Distrito): String {
+            return d.toString()
+        }
+
+        @TypeConverter
+        fun toDistrito(s: String): Distrito {
+            return Distrito.fromString(s)!!
+        }
+    }
+
+
     companion object {
         // Candidatos Alto Selva Alegre
         private val candidatoAsa1 = Candidato(
@@ -1679,6 +1739,6 @@ data class Candidato(
     }
 
     fun getCandidatosPorPartido(candidatos:List<Candidato>,partido: Partido): List<Candidato> {
-        return candidatos.filter { it.partido == partido }
+        return candidatos.filter { it.partido == partido.nombre }
     }
 }

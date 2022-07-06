@@ -10,4 +10,6 @@ sealed class Destinations(val route: String) {
     object CandidatosPartidoScreen : Destinations("candidatos_screen/?partido={partido}") {
         fun createRoute(partido: String) = "candidatos_screen/?partido=$partido"
     }
+
+    object SettingsScreen: Destinations("settings_screen")
 }

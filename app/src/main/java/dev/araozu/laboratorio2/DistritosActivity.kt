@@ -1,6 +1,7 @@
 package dev.araozu.laboratorio2
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import dev.araozu.laboratorio2.model.Distrito
 import dev.araozu.laboratorio2.model.Partido
+import dev.araozu.laboratorio2.ui.theme.backgroundColor
 import dev.araozu.laboratorio2.viewmodel.DistritoViewModel
 import dev.araozu.laboratorio2.viewmodel.PartidoViewModel
 import kotlinx.coroutines.flow.Flow
@@ -66,7 +68,8 @@ fun DistritoInfoList(
 
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ) {
         item {
             Text(

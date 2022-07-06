@@ -1,6 +1,7 @@
 package dev.araozu.laboratorio2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -19,16 +21,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
+import dev.araozu.laboratorio2.ui.theme.AppTheme
+//import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.laboratorio2.viewmodel.CandidatoViewModel
 import dev.araozu.laboratorio2.viewmodel.DistritoViewModel
 import dev.araozu.laboratorio2.viewmodel.PartidoViewModel
+
+val Context.dataStore by preferencesDataStore("settings")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Proyecto1Theme {
+            AppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -84,6 +89,12 @@ fun NavigationHost() {
                 requireNotNull(partido)
                 ListCandidatosPartido(partido,viewModel = CandidatoViewModel(), navController)
             }
+            //Settings
+            composable(
+                route = Destinations.SettingsScreen.route
+            ) {
+                SettingsScreen()
+            }
         }
     }
 
@@ -99,6 +110,8 @@ sealed class BottomNavItem(var title: String, var icon: Int, var screen_route: S
     object PartidosBottom :
         BottomNavItem("Partidos", R.drawable.ic_party, Destinations.PartidosScreen.route)
 
+    object SettingsBottom :
+            BottomNavItem("Settings", R.drawable.ic_settings, Destinations.SettingsScreen.route)
 }
 
 @Composable
@@ -106,6 +119,7 @@ fun BottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.DistritosBottom,
         BottomNavItem.PartidosBottom,
+        BottomNavItem.SettingsBottom
     )
 
     NavigationBar {

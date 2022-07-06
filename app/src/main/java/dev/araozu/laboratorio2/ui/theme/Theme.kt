@@ -1,5 +1,5 @@
 package dev.araozu.laboratorio2.ui.theme
-
+/*
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
@@ -78,4 +78,4 @@ fun Proyecto1Theme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composa
         typography = Typography,
         content = content
     )
-}
+}*/

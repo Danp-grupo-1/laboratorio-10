@@ -50,6 +50,7 @@ fun TarjetaCandidato(candidato: Candidato) {
         }
     ) {
         Row(
+
             verticalAlignment = Alignment.Top,
         ) {
             Image(

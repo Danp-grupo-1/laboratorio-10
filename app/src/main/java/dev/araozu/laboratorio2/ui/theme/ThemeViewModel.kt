@@ -16,6 +16,7 @@ class ThemeViewModel(
     private val forceDarkModeKey = booleanPreferencesKey("theme")
 
     val state = MutableLiveData<Boolean?>(null)
+
     fun request() {
         viewModelScope.launch {
             dataStore.data.collectLatest {

@@ -3,6 +3,7 @@ package dev.araozu.laboratorio2
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -28,6 +29,7 @@ import androidx.paging.compose.items
 import dev.araozu.laboratorio2.model.Candidato
 import dev.araozu.laboratorio2.model.Distrito
 import dev.araozu.laboratorio2.model.Partido
+import dev.araozu.laboratorio2.ui.theme.backgroundColor
 import dev.araozu.laboratorio2.viewmodel.CandidatoViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -111,8 +113,12 @@ fun CandidatoInfoList(
             )
         },
         content = {
-            LazyColumn {
-                items(candidatesListItems) { candidato ->
+            LazyColumn(
+                modifier = Modifier
+                    .background(backgroundColor())
+            ) {
+                items(candidatesListItems,
+                ) { candidato ->
                     TarjetaCandidato(candidato = candidato!!)
                     Spacer(modifier = Modifier.height(15.dp))
                 }

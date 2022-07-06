@@ -69,7 +69,8 @@ fun DistritoInfoList(
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-
+        modifier = Modifier
+            .background(backgroundColor())
     ) {
         item {
             Text(

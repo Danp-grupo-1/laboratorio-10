@@ -4,17 +4,36 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Switch
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import dev.araozu.laboratorio2.model.Distrito
 import dev.araozu.laboratorio2.ui.theme.Caption
 import dev.araozu.laboratorio2.ui.theme.Fonts.Caption
 import dev.araozu.laboratorio2.ui.theme.ThemeViewModel
 import dev.araozu.laboratorio2.ui.theme.backgroundColor
 import dev.araozu.laboratorio2.ui.theme.captionColor
+import kotlinx.coroutines.flow.Flow
 
 
 @SuppressLint("RememberReturnType")
@@ -57,25 +76,41 @@ fun SettingsScreen() {
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Row {
-                Caption(
-                    text = "\uD83C\uDF19  Dark mode",
+                Text(
+                    text = "Ajustes",
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    modifier = Modifier.padding(vertical = 10.dp)
+                )
+            }
+            Row {
+                Text(
+                    text = "Modo Oscuro",
                     color = captionColor(),
-                    modifier = Modifier.weight(1f)
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Switch(
                     checked = darkModeChecked,
                     onCheckedChange = { viewModel.switchToUseDarkMode(it) })
             }
             Row {
-                Caption(
-                    text = "\uD83D\uDCF1  Use device settings",
+                Text(
+                    text = "Tema del Sistema",
                     color = captionColor(),
-                    modifier = Modifier.weight(1f)
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Switch(
                     checked = useDeviceModeChecked,
                     onCheckedChange = { viewModel.switchToUseSystemSettings(it) })
             }
+
+
         }
     }
 }
+

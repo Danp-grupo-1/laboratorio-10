@@ -44,6 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // TODO: Remove, since the data will come from Firebase
         // Crea los partidos y candidatos iniciales
         suspend private fun populate(db: AppDatabase) {
             val partidoDao = db.partidoDao()

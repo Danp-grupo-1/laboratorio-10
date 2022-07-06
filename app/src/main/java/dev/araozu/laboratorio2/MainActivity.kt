@@ -3,6 +3,7 @@ package dev.araozu.laboratorio2
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,17 +22,52 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.firebase.firestore.FirebaseFirestore
+import dev.araozu.laboratorio2.model.AppDatabase
 import dev.araozu.laboratorio2.ui.theme.AppTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.laboratorio2.viewmodel.CandidatoViewModel
 import dev.araozu.laboratorio2.viewmodel.DistritoViewModel
 import dev.araozu.laboratorio2.viewmodel.PartidoViewModel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore("settings")
+
+suspend fun initializeRoom(ctx: Context) {
+    val db = AppDatabase.getDatabase(ctx)
+    val candidatos = db.candidatoDao().getAll()
+
+    if (candidatos.isEmpty()) {
+        // Retrieve data from Firestore: Candidatos
+        val firestoreDB = FirebaseFirestore.getInstance()
+        firestoreDB.collection("TODO")
+            .get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    for (doc in it.result) {
+                        Log.d("MAIN", doc.getId() + " => " + doc.getData())
+                        // TODO: store in room
+                    }
+                } else {
+                    Log.w("MAIN", "Error getting documents: ", it.exception)
+                }
+            }
+
+        // TODO: Repeat for Partidos
+    }
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        runBlocking {
+            launch {
+                initializeRoom(this@MainActivity)
+            }
+        }
+
         setContent {
             AppTheme {
                 Surface(
@@ -63,7 +99,7 @@ fun NavigationHost() {
             composable(
                 route = Destinations.DistritosScreen.route
             ) {
-                ListDistritos(navController, viewModel= DistritoViewModel())
+                ListDistritos(navController, viewModel = DistritoViewModel())
             }
             composable(
                 route = Destinations.CandidatosDistritoScreen.route,
@@ -71,12 +107,12 @@ fun NavigationHost() {
             ) {
                 val distrito = it.arguments?.getString("distrito")
                 requireNotNull(distrito)
-                ListCandidatosDistrito(distrito,viewModel = CandidatoViewModel(), navController)
+                ListCandidatosDistrito(distrito, viewModel = CandidatoViewModel(), navController)
             }
             composable(
                 route = Destinations.PartidosScreen.route
             ) {
-                ListPartidos(navController,viewModel = PartidoViewModel())
+                ListPartidos(navController, viewModel = PartidoViewModel())
             }
             //
             composable(
@@ -87,7 +123,7 @@ fun NavigationHost() {
             ) {
                 val partido = it.arguments?.getString("partido")
                 requireNotNull(partido)
-                ListCandidatosPartido(partido,viewModel = CandidatoViewModel(), navController)
+                ListCandidatosPartido(partido, viewModel = CandidatoViewModel(), navController)
             }
             //Settings
             composable(
@@ -111,7 +147,7 @@ sealed class BottomNavItem(var title: String, var icon: Int, var screen_route: S
         BottomNavItem("Partidos", R.drawable.ic_party, Destinations.PartidosScreen.route)
 
     object SettingsBottom :
-            BottomNavItem("Settings", R.drawable.ic_settings, Destinations.SettingsScreen.route)
+        BottomNavItem("Settings", R.drawable.ic_settings, Destinations.SettingsScreen.route)
 }
 
 @Composable

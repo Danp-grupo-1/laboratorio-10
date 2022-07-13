@@ -25,16 +25,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.araozu.proyecto2.model.AppDatabase
 import dev.araozu.proyecto2.model.Candidato
 import dev.araozu.proyecto2.model.Distrito
+import dev.araozu.proyecto2.model.Partido
 import dev.araozu.proyecto2.ui.theme.AppTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
-import dev.araozu.proyecto2.viewmodel.CandidatoViewModel
-import dev.araozu.proyecto2.viewmodel.DistritoViewModel
 import dev.araozu.proyecto2.viewmodel.PartidoViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore("settings")
-var roomInstance: AppDatabase? = null
 
 /**
  * Inicializa la base de datos de Room. Si Room esta vacio,
@@ -42,11 +40,10 @@ var roomInstance: AppDatabase? = null
  */
 suspend fun initializeRoom(ctx: Context) {
     val db = AppDatabase.getDatabase(ctx)
-    val candidatos = db.candidatoDao().getAll()
-    roomInstance = db
+    val listaCandidatosRoom = db.candidatoDao().getAll()
 
     // Si hay datos en Room terminar.
-    if (candidatos.isNotEmpty()) return
+    if (listaCandidatosRoom.isNotEmpty()) return
 
     // Retrieve data from Firestore: Candidatos
     val firestoreDB = FirebaseFirestore.getInstance()
@@ -77,7 +74,31 @@ suspend fun initializeRoom(ctx: Context) {
             }
         }
 
-    // TODO: Repeat for Partidos
+    firestoreDB.collection("partidos")
+        .get()
+        .addOnCompleteListener {
+            if (it.isSuccessful) {
+                val partidos = ArrayList<Partido>(it.result.size())
+
+                for (doc in it.result) {
+                    val partido = Partido(
+                        nombre = doc["nombre"] as String,
+                        fundacion = (doc["fundacion"] as Long).toInt(),
+                        domicilio = doc["domicilio"] as String,
+                        imagen = doc["imagen"] as String,
+                    )
+                    partidos.add(partido)
+                }
+
+                runBlocking {
+                    db.partidoDao().insertAll(partidos)
+                    Log.d("MAIN", "Partidos insertados")
+                }
+
+            } else {
+                Log.w("MAIN", "Error getting documents: ", it.exception)
+            }
+        }
 
 }
 

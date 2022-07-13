@@ -25,11 +25,6 @@ import dev.araozu.proyecto2.ui.theme.backgroundColor
 import dev.araozu.proyecto2.viewmodel.PartidoViewModel
 import kotlinx.coroutines.flow.Flow
 
-var listaPartidos = Partido.partidos.let {
-    it.sortBy { p -> p.nombre }
-    it
-}
-
 @ExperimentalMaterial3Api
 @Composable
 fun TarjetaPartido(partido: Partido, navController: NavController) {

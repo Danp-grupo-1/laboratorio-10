@@ -2,12 +2,13 @@ package dev.araozu.proyecto2.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import dev.araozu.proyecto2.model.AppDatabase
 import dev.araozu.proyecto2.model.Partido
 
 class PartidoSource: PagingSource<Int, Partido>() {
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Partido> {
             val nextPage = params.key ?: 1
-            val partidosList = Partido.partidos
+            val partidosList = AppDatabase.getDatabase().partidoDao().getAll()
 
             return LoadResult.Page(
                 data = partidosList.map { partido ->

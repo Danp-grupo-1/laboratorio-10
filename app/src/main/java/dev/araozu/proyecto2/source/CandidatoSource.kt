@@ -1,10 +1,9 @@
 package dev.araozu.proyecto2.source
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import dev.araozu.proyecto2.model.AppDatabase
 import dev.araozu.proyecto2.model.Candidato
-import dev.araozu.proyecto2.roomInstance
 
 class CandidatoSource(
     val filtroDistrito: String? = null,
@@ -12,15 +11,16 @@ class CandidatoSource(
 ) : PagingSource<Int, Candidato>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Candidato> {
+        val roomInstance = AppDatabase.getDatabase()
         val nextPage = params.key ?: 1
         // Obtiene toda la lista de candidatos
         val CandidatosList =
             if (filtroDistrito != null) {
-                roomInstance!!.candidatoDao().getByDistrito(filtroDistrito)
+                roomInstance.candidatoDao().getByDistrito(filtroDistrito)
             } else if (filtroPartido != null) {
-                roomInstance!!.candidatoDao().getByPartido(filtroPartido)
+                roomInstance.candidatoDao().getByPartido(filtroPartido)
             } else {
-                roomInstance!!.candidatoDao().getAll()
+                roomInstance.candidatoDao().getAll()
             }
 
         return LoadResult.Page(

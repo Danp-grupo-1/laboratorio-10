@@ -1,14 +1,11 @@
 package dev.araozu.proyecto2.model
 
-
 import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @Database(
     entities = [Partido::class, Candidato::class],
@@ -24,35 +21,23 @@ abstract class AppDatabase : RoomDatabase() {
         private var INSTANCE: AppDatabase? = null
 
         @WorkerThread
-        suspend fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context? = null): AppDatabase {
+            if (context == null && INSTANCE == null) {
+                throw RuntimeException("Se intento a acceder a Room antes de su inicialización")
+            }
 
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
+                    context!!.applicationContext,
                     AppDatabase::class.java,
                     "main_database"
                 ).build()
                 INSTANCE = instance
 
-                runBlocking {
-                    launch {
-                        populate(instance)
-                    }
-                }
-
                 instance
             }
         }
 
-        // TODO: Remove, since the data will come from Firebase
-        // Crea los partidos y candidatos iniciales
-        suspend private fun populate(db: AppDatabase) {
-            val partidoDao = db.partidoDao()
-            partidoDao.deleteAll()
-            Partido.partidos.forEach { partido ->
-                partidoDao.insertAll(partido)
-            }
-        }
     }
 
 }

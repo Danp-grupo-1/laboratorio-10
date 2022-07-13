@@ -10,9 +10,12 @@ import dev.araozu.proyecto2.model.Candidato
 import dev.araozu.proyecto2.source.CandidatoSource
 import kotlinx.coroutines.flow.Flow
 
-class CandidatoViewModel : ViewModel() {
+class CandidatoViewModel(
+    val filtroDistrito: String? = null,
+    val filtroPartido: String? = null,
+) : ViewModel() {
     val candidatos: Flow<PagingData<Candidato>> = Pager(PagingConfig(pageSize = 20)) {
-        CandidatoSource()
+        CandidatoSource(filtroDistrito, filtroPartido)
     }.flow.cachedIn(viewModelScope)
 
 }

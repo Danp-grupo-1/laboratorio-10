@@ -1,6 +1,5 @@
 package dev.araozu.proyecto2.model
 
-
 import androidx.room.*
 
 @Dao
@@ -8,7 +7,7 @@ interface PartidoDao {
     @Query("SELECT * FROM partidos ORDER BY nombre ASC")
     suspend fun getAll(): List<Partido>
 
-    @Query("SELECT * FROM partidos WHERE nombre = :name")
+    @Query("SELECT * FROM partidos WHERE nombre = :name ORDER BY nombre ASC")
     suspend fun getByName(name: String): Partido
 
     @Insert

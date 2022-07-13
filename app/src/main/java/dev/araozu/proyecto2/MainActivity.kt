@@ -131,7 +131,7 @@ fun NavigationHost() {
             ) {
                 val distrito = it.arguments?.getString("distrito")
                 requireNotNull(distrito)
-                ListCandidatosDistrito(distrito, viewModel = CandidatoViewModel(), navController)
+                ListCandidatosDistrito(distrito, navController)
             }
             composable(
                 route = Destinations.PartidosScreen.route
@@ -147,7 +147,7 @@ fun NavigationHost() {
             ) {
                 val partido = it.arguments?.getString("partido")
                 requireNotNull(partido)
-                ListCandidatosPartido(partido, viewModel = CandidatoViewModel(), navController)
+                ListCandidatosPartido(partido, navController)
             }
             //Settings
             composable(

@@ -96,7 +96,9 @@ fun TarjetaCandidato(candidato: Candidato) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CandidatoInfoList(
-    titulo: String, onBack: () -> Unit, candidatoList: Flow<PagingData<Candidato>>
+    titulo: String,
+    onBack: () -> Unit,
+    candidatoList: Flow<PagingData<Candidato>>,
 ) {
     val candidatesListItems: LazyPagingItems<Candidato> = candidatoList.collectAsLazyPagingItems()
     Scaffold(
@@ -144,10 +146,10 @@ fun ListaCandidatos(titulo: String, onBack: () -> Unit, viewModel: CandidatoView
 @Composable
 fun ListCandidatosDistrito(
     distritoStr: String,
-    viewModel: CandidatoViewModel,
     navController: NavController,
 ) {
     val distrito = Distrito.fromString(distritoStr)
+    val viewModel = CandidatoViewModel(filtroDistrito = distritoStr)
 
     ListaCandidatos(
         titulo = distrito?.toString() ?: "Distritos",
@@ -167,10 +169,11 @@ fun ListCandidatosDistrito(
 @Composable
 fun ListCandidatosPartido(
     partidoStr: String,
-    viewModel: CandidatoViewModel,
     navController: NavController,
 ) {
     val partido = partidoStr
+    val viewModel = CandidatoViewModel(filtroPartido = partidoStr)
+
     ListaCandidatos(
         titulo = partido,
         onBack = {

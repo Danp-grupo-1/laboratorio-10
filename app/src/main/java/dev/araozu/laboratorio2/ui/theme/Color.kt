@@ -82,6 +82,10 @@ fun backgroundColor() = DarkBlue orInLightTheme SilverLight
 @Composable
 fun captionColor() = Silver20 orInLightTheme DarkBlue
 
+
+@Composable
+fun fontsize() = 1
+
 private fun Color.Companion.fromRGB(rgb: String) = Color(android.graphics.Color.parseColor(rgb))
 
 @SuppressLint("ConflictingOnColor")

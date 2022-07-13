@@ -1,5 +1,6 @@
 package dev.araozu.laboratorio2.ui.theme
 import androidx.compose.material.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -14,6 +15,12 @@ private val DMSans = FontFamily(
     Font(R.font.inter_bold, FontWeight.Bold),
 
     )
+
+private val Dancing = FontFamily(
+    Font(R.font.dancing_regular, FontWeight.Normal),
+    Font(R.font.dancing_medium, FontWeight.Medium),
+    Font(R.font.dancing_bold, FontWeight.Bold),
+)
 
 internal object Fonts {
     val Title = TextStyle(
@@ -41,6 +48,7 @@ internal object Fonts {
     )
 }
 
+
 val AppTypography = Typography(
     h1 = Fonts.Title,
     h2 = Fonts.Title,
@@ -56,3 +64,4 @@ val AppTypography = Typography(
     caption = Fonts.Caption,
     overline = Fonts.Caption
 )
+

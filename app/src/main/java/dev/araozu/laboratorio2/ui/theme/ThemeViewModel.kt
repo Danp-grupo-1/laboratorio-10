@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,6 @@ class ThemeViewModel(
     private val dataStore: DataStore<Preferences>
 ) : ViewModel() {
     private val forceDarkModeKey = booleanPreferencesKey("theme")
-
     val state = MutableLiveData<Boolean?>(null)
 
     fun request() {
@@ -42,4 +42,5 @@ class ThemeViewModel(
             }
         }
     }
+
 }

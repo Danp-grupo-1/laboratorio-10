@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material.Button
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Switch
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,11 +29,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import dev.araozu.laboratorio2.model.Distrito
-import dev.araozu.laboratorio2.ui.theme.Caption
+import dev.araozu.laboratorio2.ui.theme.*
 import dev.araozu.laboratorio2.ui.theme.Fonts.Caption
-import dev.araozu.laboratorio2.ui.theme.ThemeViewModel
-import dev.araozu.laboratorio2.ui.theme.backgroundColor
-import dev.araozu.laboratorio2.ui.theme.captionColor
 import kotlinx.coroutines.flow.Flow
 
 
@@ -108,9 +106,8 @@ fun SettingsScreen() {
                     checked = useDeviceModeChecked,
                     onCheckedChange = { viewModel.switchToUseSystemSettings(it) })
             }
-
-
         }
     }
 }
+
 

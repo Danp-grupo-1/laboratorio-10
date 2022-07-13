@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,8 +32,9 @@ var listaDistritos = Distrito.values().let {
     it.sortBy { p -> p.name }
     it
 }
+
 @Composable
-fun BotonDistrito( navController: NavController,distrito: Distrito) {
+fun BotonDistrito(navController: NavController, distrito: Distrito) {
     Row(modifier = Modifier.fillMaxWidth()) {
         FilledTonalButton(
             modifier = Modifier.fillMaxWidth(),
@@ -59,10 +61,8 @@ fun BotonDistrito( navController: NavController,distrito: Distrito) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DistritoInfoList(
-    navController: NavController,distritoList: Flow<PagingData<Distrito>>
+    navController: NavController,
 ) {
-    val distritosListItems: LazyPagingItems<Distrito> = distritoList.collectAsLazyPagingItems()
-
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,8 +80,8 @@ fun DistritoInfoList(
                 modifier = Modifier.padding(vertical = 10.dp)
             )
         }
-        items(distritosListItems) {distrito->
-            BotonDistrito(navController,distrito=distrito!!)
+        items(listaDistritos) { distrito ->
+            BotonDistrito(navController, distrito = distrito!!)
             Spacer(modifier = Modifier.height(10.dp))
         }
         item {
@@ -89,17 +89,11 @@ fun DistritoInfoList(
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ListaDistritos(navController: NavController, viewModel: DistritoViewModel) {
-    DistritoInfoList(navController = navController, distritoList =viewModel.distritos )
-}
-
 
 /**
  * Renderiza una lista de botones con todos los distritos de Arequipa
  */
 @Composable
-fun ListDistritos(navController: NavController,viewModel: DistritoViewModel) {
-   ListaDistritos(navController = navController, viewModel =viewModel )
+fun ListDistritos(navController: NavController) {
+    DistritoInfoList(navController = navController)
 }

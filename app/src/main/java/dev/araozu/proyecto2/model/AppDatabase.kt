@@ -52,12 +52,6 @@ abstract class AppDatabase : RoomDatabase() {
             Partido.partidos.forEach { partido ->
                 partidoDao.insertAll(partido)
             }
-
-            val candidatoDao = db.candidatoDao()
-            candidatoDao.deleteAll()
-            Candidato.candidatos.forEach { candidato ->
-                candidatoDao.insertAll(candidato)
-            }
         }
     }
 

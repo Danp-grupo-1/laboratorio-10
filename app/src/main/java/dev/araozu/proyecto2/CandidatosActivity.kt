@@ -26,12 +26,13 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import dev.araozu.proyecto2.model.Candidato
 import dev.araozu.proyecto2.model.Distrito
 import dev.araozu.proyecto2.ui.theme.backgroundColor
 import dev.araozu.proyecto2.viewmodel.CandidatoViewModel
 import kotlinx.coroutines.flow.Flow
-
 
 
 /**
@@ -51,15 +52,15 @@ fun TarjetaCandidato(candidato: Candidato) {
         }
     ) {
         Row(
-
             verticalAlignment = Alignment.Top,
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.user),
+            AsyncImage(
+                model = candidato.foto,
+                placeholder = painterResource(id = R.drawable.user),
                 contentDescription = "Imagen de perfil",
                 modifier = Modifier
                     .height(150.dp)
-                 .clip(CircleShape),
+                    .clip(CircleShape),
             )
             Spacer(modifier = Modifier.width(10.dp))
             Column(
@@ -90,11 +91,12 @@ fun TarjetaCandidato(candidato: Candidato) {
         }
     }
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CandidatoInfoList(
-    titulo: String, onBack: () -> Unit,candidatoList: Flow<PagingData<Candidato>>
+    titulo: String, onBack: () -> Unit, candidatoList: Flow<PagingData<Candidato>>
 ) {
     val candidatesListItems: LazyPagingItems<Candidato> = candidatoList.collectAsLazyPagingItems()
     Scaffold(
@@ -116,7 +118,8 @@ fun CandidatoInfoList(
                 modifier = Modifier
                     .background(backgroundColor())
             ) {
-                items(candidatesListItems,
+                items(
+                    candidatesListItems,
                 ) { candidato ->
                     TarjetaCandidato(candidato = candidato!!)
                     Spacer(modifier = Modifier.height(15.dp))
@@ -132,7 +135,7 @@ fun CandidatoInfoList(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaCandidatos(titulo: String, onBack: () -> Unit, viewModel: CandidatoViewModel) {
-    CandidatoInfoList(titulo,onBack,candidatoList = viewModel.candidatos)
+    CandidatoInfoList(titulo, onBack, candidatoList = viewModel.candidatos)
 }
 
 /**

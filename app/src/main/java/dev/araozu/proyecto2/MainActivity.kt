@@ -23,6 +23,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.araozu.proyecto2.model.AppDatabase
+import dev.araozu.proyecto2.model.Candidato
+import dev.araozu.proyecto2.model.Distrito
 import dev.araozu.proyecto2.ui.theme.AppTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.proyecto2.viewmodel.CandidatoViewModel
@@ -32,29 +34,51 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore("settings")
+var roomInstance: AppDatabase? = null
 
+/**
+ * Inicializa la base de datos de Room. Si Room esta vacio,
+ * recupera los registros de Firebase.
+ */
 suspend fun initializeRoom(ctx: Context) {
     val db = AppDatabase.getDatabase(ctx)
     val candidatos = db.candidatoDao().getAll()
+    roomInstance = db
 
-    if (candidatos.isEmpty()) {
-        // Retrieve data from Firestore: Candidatos
-        val firestoreDB = FirebaseFirestore.getInstance()
-        firestoreDB.collection("TODO")
-            .get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    for (doc in it.result) {
-                        Log.d("MAIN", doc.id + " => " + doc.data)
-                        // TODO: store in room
-                    }
-                } else {
-                    Log.w("MAIN", "Error getting documents: ", it.exception)
+    // Si hay datos en Room terminar.
+    if (candidatos.isNotEmpty()) return
+
+    // Retrieve data from Firestore: Candidatos
+    val firestoreDB = FirebaseFirestore.getInstance()
+    firestoreDB.collection("candidatos")
+        .get()
+        .addOnCompleteListener {
+            if (it.isSuccessful) {
+                val candidatos = ArrayList<Candidato>(it.result.size())
+
+                for (doc in it.result) {
+                    val candidato = Candidato(
+                        nombre = doc["nombre"] as String,
+                        partido = doc["partido"] as String,
+                        foto = doc["foto"] as String,
+                        biografia = doc["biografia"] as String,
+                        distrito = Distrito.fromString(doc["distrito"] as String)!!
+                    )
+                    candidatos.add(candidato)
                 }
-            }
 
-        // TODO: Repeat for Partidos
-    }
+                runBlocking {
+                    db.candidatoDao().insertAll(candidatos)
+                    Log.d("MAIN", "Candidatos insertados")
+                }
+
+            } else {
+                Log.w("MAIN", "Error getting documents: ", it.exception)
+            }
+        }
+
+    // TODO: Repeat for Partidos
+
 }
 
 class MainActivity : ComponentActivity() {
@@ -98,8 +122,9 @@ fun NavigationHost() {
             composable(
                 route = Destinations.DistritosScreen.route
             ) {
-                ListDistritos(navController, viewModel = DistritoViewModel())
+                ListDistritos(navController)
             }
+
             composable(
                 route = Destinations.CandidatosDistritoScreen.route,
                 arguments = listOf(navArgument("distrito") { defaultValue = "Arequipa" })

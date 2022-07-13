@@ -19,6 +19,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.AsyncImage
 import dev.araozu.proyecto2.model.Partido
 import dev.araozu.proyecto2.ui.theme.backgroundColor
 import dev.araozu.proyecto2.viewmodel.PartidoViewModel
@@ -28,6 +29,7 @@ var listaPartidos = Partido.partidos.let {
     it.sortBy { p -> p.nombre }
     it
 }
+
 @ExperimentalMaterial3Api
 @Composable
 fun TarjetaPartido(partido: Partido, navController: NavController) {
@@ -75,22 +77,22 @@ fun TarjetaPartido(partido: Partido, navController: NavController) {
         }
 
 
-
     }
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PartidoInfoList(
-    navController: NavController,partidoList: Flow<PagingData<Partido>>
+    navController: NavController, partidoList: Flow<PagingData<Partido>>
 ) {
     val partidosListItems: LazyPagingItems<Partido> = partidoList.collectAsLazyPagingItems()
 
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                .background(backgroundColor())
+        modifier = Modifier
+            .background(backgroundColor())
     ) {
         item {
             Text(
@@ -103,8 +105,8 @@ fun PartidoInfoList(
                 modifier = Modifier.padding(vertical = 10.dp)
             )
         }
-        items(partidosListItems) {partido ->
-            TarjetaPartido(partido=partido!!, navController)
+        items(partidosListItems) { partido ->
+            TarjetaPartido(partido = partido!!, navController)
             Spacer(modifier = Modifier.height(10.dp))
 
         }
@@ -117,13 +119,14 @@ fun PartidoInfoList(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaPartidos(navController: NavController, viewModel: PartidoViewModel) {
-    PartidoInfoList(navController =navController , partidoList = viewModel.partidos)
+    PartidoInfoList(navController = navController, partidoList = viewModel.partidos)
 }
+
 /**
  * Renderiza una lista de botones con los partidos políticos
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListPartidos( navController: NavController,viewModel: PartidoViewModel) {
-  ListaPartidos(navController = navController, viewModel =viewModel )
+fun ListPartidos(navController: NavController, viewModel: PartidoViewModel) {
+    ListaPartidos(navController = navController, viewModel = viewModel)
 }

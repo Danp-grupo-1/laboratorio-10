@@ -3,12 +3,13 @@ package dev.araozu.proyecto2.source
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import dev.araozu.proyecto2.model.Candidato
+import dev.araozu.proyecto2.roomInstance
 
 class CandidatoSource: PagingSource<Int, Candidato>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Candidato> {
         val nextPage = params.key ?: 1
-        //Obtiene toda la lista de candidatos
-        val CandidatosList = Candidato.candidatos
+        // Obtiene toda la lista de candidatos
+        val CandidatosList = roomInstance!!.candidatoDao().getAll()
 
         return LoadResult.Page(
             data = CandidatosList.map { candidato ->

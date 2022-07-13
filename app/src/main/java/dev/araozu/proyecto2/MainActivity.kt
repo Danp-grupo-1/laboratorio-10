@@ -54,6 +54,8 @@ suspend fun initializeRoom(ctx: Context) {
                 val candidatos = ArrayList<Candidato>(it.result.size())
 
                 for (doc in it.result) {
+                    if (doc.data.isEmpty()) continue
+
                     val candidato = Candidato(
                         nombre = doc["nombre"] as String,
                         partido = doc["partido"] as String,

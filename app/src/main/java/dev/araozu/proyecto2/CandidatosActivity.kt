@@ -2,7 +2,6 @@ package dev.araozu.proyecto2
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,10 +9,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,7 +25,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import dev.araozu.proyecto2.model.Candidato
 import dev.araozu.proyecto2.model.Distrito
 import dev.araozu.proyecto2.ui.theme.backgroundColor
@@ -119,6 +116,7 @@ fun CandidatoInfoList(
             LazyColumn(
                 modifier = Modifier
                     .background(backgroundColor())
+                    .padding(it)
             ) {
                 items(
                     candidatesListItems,

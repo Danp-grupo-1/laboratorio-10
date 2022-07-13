@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.araozu.laboratorio2">
+    package="dev.araozu.proyecto2">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Laboratorio2">
         <activity
-            android:name=".MainActivity"
+            android:name="dev.araozu.proyecto2.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Laboratorio2">

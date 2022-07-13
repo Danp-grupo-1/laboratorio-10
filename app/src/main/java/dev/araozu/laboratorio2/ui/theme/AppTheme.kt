@@ -14,15 +14,17 @@ fun AppTheme(
 ) {
     val context = LocalContext.current
     val viewModel = remember { ThemeViewModel(context.dataStore) }
+
     val state = viewModel.state.observeAsState()
     val value = state.value ?: isSystemInDarkTheme()
 
     LaunchedEffect(viewModel) { viewModel.request() }
 
     DarkThemeValue.current.value = value
+
+
     MaterialTheme(
         colors = if (value) AppDarkColors else AppLightColors,
-        typography = AppTypography,
         shapes = AppShapes,
         content = content
     )

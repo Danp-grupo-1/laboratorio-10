@@ -1,6 +1,7 @@
 package dev.araozu.proyecto2
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -44,11 +45,13 @@ fun TarjetaPartido(partido: Partido, navController: NavController) {
         Row(
             verticalAlignment = Alignment.Top,
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
+            AsyncImage(
+                model = partido.imagen,
+                fallback = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo del partido",
                 modifier = Modifier
                     .height(150.dp)
+                    .width(150.dp)
                 // .clip(CircleShape),
             )
             Spacer(modifier = Modifier.width(10.dp))
@@ -70,8 +73,6 @@ fun TarjetaPartido(partido: Partido, navController: NavController) {
                 )
             }
         }
-
-
     }
 }
 

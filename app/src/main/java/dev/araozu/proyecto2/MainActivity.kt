@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -27,6 +29,7 @@ import dev.araozu.proyecto2.model.Candidato
 import dev.araozu.proyecto2.model.Distrito
 import dev.araozu.proyecto2.model.Partido
 import dev.araozu.proyecto2.ui.theme.AppTheme
+import dev.araozu.proyecto2.ui.theme.orInLightTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.proyecto2.viewmodel.PartidoViewModel
 import kotlinx.coroutines.launch
@@ -194,7 +197,7 @@ sealed class BottomNavItem(var title: String, var icon: Int, var screen_route: S
         BottomNavItem("Partidos", R.drawable.ic_party, Destinations.PartidosScreen.route)
 
     object SettingsBottom :
-        BottomNavItem("Settings", R.drawable.ic_settings, Destinations.SettingsScreen.route)
+        BottomNavItem("Preferencias", R.drawable.ic_settings, Destinations.SettingsScreen.route)
 }
 
 @Composable

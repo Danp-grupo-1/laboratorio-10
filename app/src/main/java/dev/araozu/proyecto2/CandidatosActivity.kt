@@ -56,7 +56,8 @@ fun TarjetaCandidato(candidato: Candidato) {
                 placeholder = painterResource(id = R.drawable.user),
                 contentDescription = "Imagen de perfil",
                 modifier = Modifier
-                    .height(150.dp)
+                    .height(125.dp)
+                    .width(125.dp)
                     .clip(CircleShape),
             )
             Spacer(modifier = Modifier.width(10.dp))

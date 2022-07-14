@@ -251,8 +251,8 @@ fun Tema() {
 @Composable
 fun Fuentedeletra() {
 
-    val items = listOf("Sans Sheriff", "Inter", "Dancing")
-    var valfinal: String by remember { mutableStateOf("Sanss Sheriff") }
+    val items = listOf("Sans Seriff", "Inter", "Dancing")
+    var valfinal: String by remember { mutableStateOf("Sans Seriff") }
     var expanded by remember { mutableStateOf(false) }
 
     Box(

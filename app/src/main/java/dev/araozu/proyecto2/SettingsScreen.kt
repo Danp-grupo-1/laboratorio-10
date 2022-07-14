@@ -1,4 +1,4 @@
-package dev.araozu.laboratorio2
+package dev.araozu.proyecto2
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

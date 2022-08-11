@@ -21,6 +21,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.araozu.lab10.model.AppDatabase
 import dev.araozu.lab10.model.Candidato
@@ -29,10 +32,37 @@ import dev.araozu.lab10.model.Partido
 import dev.araozu.lab10.ui.theme.AppTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.lab10.viewmodel.PartidoViewModel
+import dev.araozu.lab10.workers.RoomWorker
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore("settings")
+
+// OneTimeWorkRequestBuilder
+fun oneTime(): OneTimeWorkRequest {
+    TODO()
+}
+
+// PeriodicWorkRequestBuilder
+fun periodic(): PeriodicWorkRequest {
+    TODO()
+}
+
+// paso de parametros, con OneTimeWork
+fun parametros(): OneTimeWorkRequest {
+    TODO()
+}
+
+// tareas en paralelo (CandidatosWorker y PartidosWorker)
+fun paralelo(): OneTimeWorkRequest {
+    TODO()
+}
+
+// tareas en forma secuencial (RoomWorker -> [CandidatosWorker, PartidosWorker])
+fun secuencial(): OneTimeWorkRequest {
+    TODO()
+}
+
 
 /**
  * Inicializa la base de datos de Room. Si Room esta vacio,

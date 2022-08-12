@@ -21,9 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequest
+import androidx.work.*
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.araozu.lab10.model.AppDatabase
 import dev.araozu.lab10.model.Candidato
@@ -32,9 +30,11 @@ import dev.araozu.lab10.model.Partido
 import dev.araozu.lab10.ui.theme.AppTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.lab10.viewmodel.PartidoViewModel
+import dev.araozu.lab10.workers.CandidatosWorker
 import dev.araozu.lab10.workers.RoomWorker
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.TimeUnit
 
 val Context.dataStore by preferencesDataStore("settings")
 
@@ -50,7 +50,25 @@ fun periodic(): PeriodicWorkRequest {
 
 // paso de parametros, con OneTimeWork
 fun parametros(): OneTimeWorkRequest {
-    TODO()
+    val constraints = Constraints.Builder()
+        .setRequiresBatteryNotLow(true)
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresStorageNotLow(true)
+        .build()
+
+    val data = workDataOf(RoomWorker.DB_EMPTY to true)
+
+    val request = OneTimeWorkRequestBuilder<CandidatosWorker>()
+        .setInputData(data)
+        .setConstraints(constraints)
+        .setBackoffCriteria(
+            BackoffPolicy.LINEAR,
+            OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+            TimeUnit.MILLISECONDS
+        )
+        .build()
+
+    return request
 }
 
 // tareas en paralelo (CandidatosWorker y PartidosWorker)

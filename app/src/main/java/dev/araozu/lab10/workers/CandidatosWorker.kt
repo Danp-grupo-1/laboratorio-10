@@ -20,6 +20,9 @@ class CandidatosWorker(
     : CoroutineWorker(appContext, workerParameters){
 
     override suspend fun doWork(): Result {
+        val roomVacio = inputData.getBoolean(RoomWorker.DB_EMPTY, true)
+        if (!roomVacio) return Result.success()
+
         val db = AppDatabase.getDatabase(appContext)
 
         // Retrieve data from Firestore: Candidatos

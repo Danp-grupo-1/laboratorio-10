@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import dev.araozu.lab10.model.AppDatabase
 
-class RoomWorker(
+class   RoomWorker(
     private val appContext: Context,
     workerParameters: WorkerParameters
 ) :

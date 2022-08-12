@@ -31,6 +31,7 @@ import dev.araozu.lab10.ui.theme.AppTheme
 //import dev.araozu.laboratorio2.ui.theme.Proyecto1Theme
 import dev.araozu.lab10.viewmodel.PartidoViewModel
 import dev.araozu.lab10.workers.CandidatosWorker
+import dev.araozu.lab10.workers.PartidosWorker
 import dev.araozu.lab10.workers.RoomWorker
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -71,14 +72,24 @@ fun parametros(): OneTimeWorkRequest {
     return request
 }
 
+
 // tareas en paralelo (CandidatosWorker y PartidosWorker)
-fun paralelo(): OneTimeWorkRequest {
-    TODO()
+fun paralelo(): WorkContinuation {
+    return WorkManager.getInstance().beginWith(listOf(
+        OneTimeWorkRequest.from(CandidatosWorker::class.java),
+        OneTimeWorkRequest.from(PartidosWorker::class.java)
+    ))
 }
 
 // tareas en forma secuencial (RoomWorker -> [CandidatosWorker, PartidosWorker])
-fun secuencial(): OneTimeWorkRequest {
-    TODO()
+fun secuencial(): WorkContinuation {
+    return WorkManager.getInstance()
+        .beginWith(
+            OneTimeWorkRequest.from(RoomWorker::class.java)
+        ).then(listOf(
+            OneTimeWorkRequest.from(CandidatosWorker::class.java),
+            OneTimeWorkRequest.from(PartidosWorker::class.java)
+        ))
 }
 
 

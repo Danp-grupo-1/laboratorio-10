@@ -41,12 +41,27 @@ val Context.dataStore by preferencesDataStore("settings")
 
 // OneTimeWorkRequestBuilder
 fun oneTime(): OneTimeWorkRequest {
-    TODO()
+   val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresStorageNotLow(true)
+            .build()
+
+        return  OneTimeWorkRequestBuilder<RoomWorker>()
+            .setConstraints(constraints).build()
 }
 
 // PeriodicWorkRequestBuilder
 fun periodic(): PeriodicWorkRequest {
-    TODO()
+   val constraints = Constraints.Builder()
+        .setRequiresBatteryNotLow(true)
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresStorageNotLow(true)
+        .build()
+    val data = workDataOf(RoomWorker.DB_EMPTY to true)
+    val request = PeriodicWorkRequestBuilder<CandidatosWorker>(3,TimeUnit.HOURS)
+        .setInputData(data).setConstraints(constraints).build()
+    return request
 }
 
 // paso de parametros, con OneTimeWork
